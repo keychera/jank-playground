@@ -90,3 +90,18 @@ jank --module-path src compile chera.hello -o hello.exe
 .\hello.exe
 # hello jank!
 ```
+
+# lets jank!
+
+applying insights from our clojure-clr journey https://github.com/keychera/clojureclr-playground
+
+making a pseudo deps.edn project
+
+```sh
+# prepare our bbest (tools-bbin + bb.edn + equipment.lets), write some deps.edn, and voila
+bb letsgo
+# setting up jank pseudo deps.edn project
+#   with ops: {:prep? false}
+# running jank!
+# hello jank!
+```
