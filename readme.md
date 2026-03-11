@@ -82,3 +82,11 @@ jank --module-path src run-main chera.hello
 ```
 
 ohhh, module = namespace?
+
+# aot compile
+
+```sh
+jank --module-path src compile chera.hello -o hello.exe
+.\hello.exe
+# hello jank!
+```
