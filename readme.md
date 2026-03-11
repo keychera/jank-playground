@@ -43,3 +43,42 @@ jank repl
 # hello jank!
 # nil
 ```
+
+8. to the book!
+
+the following took me a while. I made a hello.jank at src/chera and run...
+
+```sh
+# make a hello.jank at src/chera
+jank --module-path src run-main
+# error: Please provide the run-main command a module.
+# huh?
+
+jank --module-path "src" run-main
+# error: Please provide the run-main command a module.
+
+jank --module-path 'src' run-main
+# error: Please provide the run-main command a module.
+
+# in cmd instead of powershell
+jank --module-path "src" run-main
+# error: Please provide the run-main command a module.
+
+jank run-main --module-path 'src' 
+# error: Please provide the run-main command a module.
+
+jank --module-path "[full-path]/src" run-main
+# error: Please provide the run-main command a module.
+
+# looking at source code... https://github.com/ikappaki/jank-win/blob/9ff68df86b8b01dfd3444e18810475ff3a130429/compiler%2Bruntime/src/cpp/jank/util/cli.cpp#L89 👀
+# error from positional argument?
+jank --module-path "[full-path]/src" run-main src
+# ─ runtime/module-not-found ─────────────────────────────────────────────────────────────────────────
+# error: Unable to find module 'src'.
+# oh!
+
+jank --module-path src run-main chera.hello
+# hello jank!
+```
+
+ohhh, module = namespace?

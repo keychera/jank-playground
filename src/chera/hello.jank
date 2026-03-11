@@ -1,0 +1,4 @@
+(ns chera.hello)
+
+(defn -main [& _]
+  (println "hello jank!"))
