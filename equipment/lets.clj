@@ -38,5 +38,4 @@
         (catch Throwable err
           (println "error when running clj-kondo! cause:" (:cause (Throwable->map err))))))
     (println "running jank!")
-    (b/process {:env {"CLOJURE_LOAD_PATH" LOAD_PATH}
-                :command-args ["jank" "--module-path" LOAD_PATH "run-main" "chera.hello"]})))
+    (b/process {:command-args ["jank" "--module-path" LOAD_PATH "run-main" "chera.hello"]})))
