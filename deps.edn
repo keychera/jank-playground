@@ -1,1 +1,2 @@
-{:paths ["src"]}
+{:paths ["src"]
+ :deps  {io.github.keychera/medley {:git/sha "60f5783646b043fded53b607efcb72ab9df1a7dc"}}}

@@ -105,3 +105,17 @@ bb letsgo
 # running jank!
 # hello jank!
 ```
+
+# try libs!
+
+tried some clojure libs, but each lib has its own blocker (as of now)
+
+- odoyle-rules -> fail, we tried to un-spec it, but it runs deep
+  (we will not give up on this lib,)
+
+- malli -> java stuff
+
+- thi.ng/geom -> defprotocol 
+
+- medley -> java stuff, but we patched it a bit = https://github.com/keychera/medley/commit/60f5783646b043fded53b607efcb72ab9df1a7dc
+

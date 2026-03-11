@@ -1,4 +1,11 @@
-(ns chera.hello)
+(ns chera.hello
+  (:require
+   [medley.core :as medley]))
 
 (defn -main [& _]
-  (println "hello jank!"))
+  (let [cpp-val #cpp "hello"
+        assoced (medley/assoc-some {:a 10} :b 3 :c nil :d 5)]
+    (println "hello jank!")
+    (println cpp-val)
+    (println (str "combine? " cpp-val))
+    (println assoced)))
