@@ -1,1 +1,2 @@
-{:paths ["src"]}
+{:paths ["src"]
+ :deps  {io.github.keychera/odoyle-rules {:local/root "../odoyle-rules"}}}

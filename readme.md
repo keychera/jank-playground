@@ -105,3 +105,53 @@ bb letsgo
 # running jank!
 # hello jank!
 ```
+
+# lets odoyle!
+
+a typeless endeavor
+
+also, jank error is so cool
+
+```sh
+─ parse/invalid-keyword ────────────────────────────────────────────────────────────────────────────
+error: Unable to resolve namespace alias 's'                                                        
+
+─────┬──────────────────────────────────────────────────────────────────────────────────────────────
+     │ ...\odoyle-rules\src\odoyle\rules.cljc
+─────┼──────────────────────────────────────────────────────────────────────────────────────────────
+ 47  │ (defn parse [spec content]
+ 48  │   #_(let [res (s/conform spec content)]
+ 49  │     (if (= ::s/invalid res)
+     │            ^^^^^^^^^^^ Found here.
+
+
+─ analyze/invalid-fn-parameters ────────────────────────────────────────────────────────────────────
+error: This function has too many parameters. The max is 10.                                        
+
+─────┬──────────────────────────────────────────────────────────────────────────────────────────────
+     │ ...\odoyle-rules\src\odoyle\rules.cljc
+─────┼──────────────────────────────────────────────────────────────────────────────────────────────
+ 97  │              facts ;; map of id -> (map of attr -> Fact)
+ 98  │              ))
+ 99  │ (defn ->MemoryNode [id
+     │                    ^^ Found here.
+     │ ^ Expanded from this macro.
+100  │                     parent-id ;; JoinNode id
+101  │                     child-id ;; JoinNode id
+102  │                     leaf-node-id ;; id of the MemoryNode at the end (same as id if this is the leaf node)
+103  │                     condition ;; Condition associated with this node
+104  │                     matches ;; map of id+attrs -> Match
+105  │                     what-fn ;; fn
+106  │                     when-fn ;; fn
+107  │                     then-fn ;; fn
+108  │                     then-finally-fn ;; fn
+109  │                     trigger ;; boolean indicating that the :then block can be triggered
+110  │                     ]
+
+
+
+libunwind:      pc not in table, pc=0x1D8BA132837
+
+```
+
+need more hammock, odoyle rely so much on spec/conform for ruleset macro

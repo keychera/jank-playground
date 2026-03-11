@@ -1,4 +1,37 @@
-(ns chera.hello)
+(ns chera.hello
+  (:require
+   [odoyle.rules :as o]))
 
 (defn -main [& _]
-  (println "hello jank!"))
+  (println "hello jank!")
+  (let [rules
+        (o/ruleset
+         {::player
+          [:what
+           [::player ::health health]
+           [::player ::defense defense]]
+
+          ::attack-player
+          [:what
+           [::player ::health health {:then false}]
+           [::player ::defense defense]
+           [attack-id ::damage damage]
+           :then
+           (let [damaged-health (- health (- damage defense))]
+             (-> session
+                 (o/retract attack-id ::damage)
+                 (o/insert ::player ::health damaged-health)
+                 (o/reset!)))]})
+        #_world #_(-> (reduce o/add-rule (o/->session) rules)
+                      (o/insert ::player ::health 100)
+                      (o/insert ::player ::defense 10)
+                      (o/insert ::from-out-there ::damage 100)
+                      (o/fire-rules)
+                      (o/query-all ::player))
+        cpp-val #cpp "meow"]
+    (println cpp-val)
+    (println rules)))
+
+(comment
+
+  ::waiting-for-something-to-happen?)
