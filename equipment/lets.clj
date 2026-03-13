@@ -17,14 +17,14 @@
 
 (defn jank-command [jank-deps-edn command {:keys [main-module extra]}]
   (let [{:keys [module-path include-dirs]} jank-deps-edn
-        #_includes #_(into []
-                           (mapcat (fn [inc-dir] ["-I" inc-dir]))
-                           include-dirs)]
+        includes (into []
+                       (mapcat (fn [inc-dir] ["-I" inc-dir]))
+                       include-dirs)]
     (into []
           (remove nil?)
           (concat
            ["jank" "--module-path" module-path]
-           #_includes
+           includes
            [command main-module]
            extra))))
 
