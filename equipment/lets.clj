@@ -40,11 +40,12 @@
     (prep-kondo module-path)))
 
 (defn jank
-  [{}]
-  (println "setting up jank pseudo deps.edn project")
+  {:org.babashka/cli {:exec-args {:args nil}}}
+  [{:keys [args]}]
+  (println "setting up jank pseudo deps.edn project" args)
   (let [jedn (->jank-deps-edn)
         jcmd (jank-command jedn "run-main" {:main-module "chera.hello"
-                                            :extra ["-l" "compress"]})]
+                                            :extra ["-l" "compress" "--" args]})]
     (log jcmd)
     (b/process {:command-args jcmd})))
 

@@ -27,7 +27,7 @@
 
 (defn do-native-stuff [args]
   (if (empty? args)
-    (println "Try passing some data to compress!")
+    (println "Try passing some data to --args to compress!")
     (let [input (first args)
           output (native_lib.compress input)]
       (println "input size" (count input) "output size" (count output)))))
@@ -52,7 +52,8 @@
             (println (o/query-all session' ::player))
             (recur (inc i) session')))))
     ;; I am assuming windows' jank doesn't have a way to pass args to main?
-    (do-native-stuff ["hello cpp!! hello cpp!! hello cpp!! hello cpp!! hello cpp!!"])
+    ;; wrong: https://github.com/ikappaki/jank-win/blob/9ff68df86b8b01dfd3444e18810475ff3a130429/book/src/differences-from-clojure.md?plain=1#L12
+    (do-native-stuff args)
     (catch cpp/jank.runtime.object_ref e
       (println :caught e))))
 

@@ -138,4 +138,6 @@ bb prep
 bb run-main
 bb jepl
 # etc
+
+bb jank --args "bbbbbbbbbbbbbbest if we try clojure"
 ```
