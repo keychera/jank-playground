@@ -3,4 +3,6 @@
  :tasks {prep    {:task (exec 'equipment.lets/prep)}
          jank    {:task (exec 'equipment.lets/jank)}
          jepl    {:task (exec 'equipment.lets/jepl)}
-         compile {:task (exec 'equipment.lets/compile-jank)}}}
+         compile {:task (exec 'equipment.lets/compile-jank)}
+         lets (let [[action] *command-line-args*]
+                (exec (symbol "equipment.lets" action)))}}

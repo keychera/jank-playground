@@ -39,3 +39,9 @@
     (b/process {:command-args ["jank" "--module-path" module-path
                                "compile" "chera.hello"
                                "-o" "hello.exe"]})))
+
+(defn cpp
+  [{}]
+  (b/process {:command-args ["clang++" "-shared"
+                             "-o" "native/libcompress.dll"
+                             "-lz" "native/compress.cpp"]}))
