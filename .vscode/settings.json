@@ -1,0 +1,14 @@
+{
+    "calva.replConnectSequences": [
+        {
+            "name": "jank repl",
+            "projectType": "generic",
+            "cljsType": "none",
+            "autoSelectForConnect": true,
+            "nReplPortFile": [
+                ".nrepl-port"
+            ]
+        }
+    ],
+    "html.format.wrapAttributes": "preserve-aligned",
+}

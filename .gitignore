@@ -2,9 +2,11 @@
 .lsp
 .nrepl-port
 .cpcache
+.calva
 
 target
 
 .zzz
 
 *.exe
+*.out

@@ -26,9 +26,7 @@
 (defn -main [& _]
   (try
     (println "hello jank!")
-    (let [_ (println "rules2")
-          _ (println "rules" rules)
-          cpp-val #cpp "hello"
+    (let [cpp-val #cpp "hello"
           assoced (medley/assoc-some {:a 10} :b 3 :c nil :d 5)]
       (println cpp-val)
       (println (str "combine? " cpp-val))
@@ -37,7 +35,7 @@
              session (-> (reduce o/add-rule (o/->session) rules)
                          (o/insert ::player ::health 100)
                          (o/insert ::player ::defense 10))]
-        (when (< i 1000)
+        (when (< i 1)
           (let [session' (time
                           (-> session
                               (o/insert ::from-out-there ::damage 11)
@@ -48,6 +46,14 @@
       (println :caught e))))
 
 (comment
+
+  (-> (reduce o/add-rule (o/->session) rules)
+      (o/insert ::player ::health 100)
+      (o/insert ::player ::defense 10)
+      (o/insert ::from-out-there ::damage 11)
+      (o/fire-rules)
+      (o/query-all))
+
 
   ;; things we found that err in jank, but works in clojure
   (vec (set '(11 11)))
