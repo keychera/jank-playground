@@ -3,6 +3,7 @@
   (:refer-global :only [native_lib.compress])
   (:require
    [odoyle.rules :as o]
+   [chera.sdl3 :as sdl3]
    [clojure.string :as str]))
 
 (def rules
@@ -51,6 +52,7 @@
     ;; I am assuming windows' jank doesn't have a way to pass args to main?
     ;; wrong: https://github.com/ikappaki/jank-win/blob/9ff68df86b8b01dfd3444e18810475ff3a130429/book/src/differences-from-clojure.md?plain=1#L12
     (do-native-stuff args)
+    (sdl3/do-sdl-stuff)
     (catch cpp/jank.runtime.object_ref e
       (println :caught e))))
 

@@ -31,6 +31,8 @@
     (fs/create-dirs sdl-build)
     (b/process {:dir sdl-build :command-args ["cmake" "-DCMAKE_BUILD_TYPE=Release" ".."] :out :inherit :err :inherit})
     (b/process {:dir sdl-build :command-args ["cmake" "--build" "." "--config" "Release" "--parallel"] :out :inherit :err :inherit})
+    ;; workaround
+    (fs/move (str sdl-build "/Release/SDL3.dll") (str sdl-build "/Release/libSDL3.dll"))
     (log "done")))
 
 (defn check [& _]

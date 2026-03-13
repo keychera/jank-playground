@@ -1,0 +1,11 @@
+(ns chera.sdl3
+  (:include "SDL3/sdl.h"))
+
+(defn do-sdl-stuff []
+  (if-let [res (cpp/SDL_Init cpp/SDL_INIT_VIDEO)]
+    (println "success?" res)
+    (println "SDL_Init failed!" (cpp/SDL_GetError)))
+
+  (let [main-scale (cpp/SDL_GetDisplayContentScale (cpp/SDL_GetPrimaryDisplay))]
+    (println "mainscale =" main-scale)))
+

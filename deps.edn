@@ -1,5 +1,5 @@
 {:paths ["src"]
  :deps {io.github.keychera/odoyle-rules {:git/sha "15c5f2cc0905cf54bd76db627f2114721cf75e32"}}
- :jank {:include-dirs ["native"]
-        :library-dirs ["native"]
-        :linked-libraries ["compress"]}}
+ :jank {:include-dirs ["native" ".gitdeps/sdl3/include"] ;; hmm maybe gitdeps is not the best name here, hardcoded in lets.clj
+        :library-dirs ["native" ".gitdeps/sdl3/build/Release"]
+        :linked-libraries ["compress" "sdl3"]}}
