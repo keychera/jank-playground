@@ -2,7 +2,6 @@
   (:include "compress.hpp")
   (:refer-global :only [native_lib.compress])
   (:require
-   [medley.core :as medley]
    [odoyle.rules :as o]
    [clojure.string :as str]))
 
@@ -35,11 +34,9 @@
 (defn -main [& args]
   (try
     (println "hello jank!")
-    (let [cpp-val #cpp "hello"
-          assoced (medley/assoc-some {:a 10} :b 3 :c nil :d 5)]
+    (let [cpp-val #cpp "hello"]
       (println cpp-val)
       (println (str "combine? " cpp-val))
-      (println assoced)
       (loop [i 0
              session (-> (reduce o/add-rule (o/->session) rules)
                          (o/insert ::player ::health 100)

@@ -1,4 +1,3 @@
 {:paths ["src"]
- :deps  {io.github.keychera/medley {:git/sha "60f5783646b043fded53b607efcb72ab9df1a7dc"}
-         io.github.keychera/odoyle-rules {:git/sha "15c5f2cc0905cf54bd76db627f2114721cf75e32"}}
+ :deps  {io.github.keychera/odoyle-rules {:git/sha "15c5f2cc0905cf54bd76db627f2114721cf75e32"}}
  :jank {:include-dirs ["native"]}}
