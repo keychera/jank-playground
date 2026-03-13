@@ -18,7 +18,7 @@
 (defn jank-command [jank-deps-edn command {:keys [main-module extra]}]
   (let [{:keys [module-path include-dirs]} jank-deps-edn
         includes (into []
-                       (mapcat (fn [inc-dir] ["-I" inc-dir]))
+                       (mapcat (fn [inc-dir] ["-I" inc-dir "-L" inc-dir]))
                        include-dirs)]
     (into []
           (remove nil?)
@@ -43,7 +43,8 @@
   [{}]
   (println "setting up jank pseudo deps.edn project")
   (let [jedn (->jank-deps-edn)
-        jcmd (jank-command jedn "run-main" {:main-module "chera.hello"})]
+        jcmd (jank-command jedn "run-main" {:main-module "chera.hello"
+                                            :extra ["-l" "compress"]})]
     (log jcmd)
     (b/process {:command-args jcmd})))
 

@@ -51,7 +51,8 @@
                               (o/fire-rules)))]
             (println (o/query-all session' ::player))
             (recur (inc i) session')))))
-    (do-native-stuff args)
+    ;; I am assuming windows' jank doesn't have a way to pass args to main?
+    (do-native-stuff ["hello cpp!! hello cpp!! hello cpp!! hello cpp!! hello cpp!!"])
     (catch cpp/jank.runtime.object_ref e
       (println :caught e))))
 
