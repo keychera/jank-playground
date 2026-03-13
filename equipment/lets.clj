@@ -1,7 +1,8 @@
 (ns equipment.lets
   (:require
    [clojure.string :as str]
-   [clojure.tools.build.api :as b])
+   [clojure.tools.build.api :as b]
+   [babashka.fs :as fs])
   (:import
    [java.io File]))
 
@@ -10,21 +11,49 @@
 (defn log [& stuff]
   (apply println "[chera@jank]" stuff))
 
+;; some manual compile stuff
+;; run with lets
+;; e.g. bb lets cpp
+(defn cpp
+  [{}]
+  (b/process {:command-args ["clang++" "-shared"
+                             "-o" "native/libcompress.dll"
+                             "-lz" "native/compress.cpp"]}))
+
+(def gitdeps-root ".gitdeps")
+
+;; https://mccue.dev/pages/12-26-24-sdl3-java
+(defn build-sdl
+  [{}]
+  (let [sdl-home  (str gitdeps-root "/sdl3")
+        sdl-build (str sdl-home "/build")]
+    (b/process {:command-args ["git" "clone" "--depth" "1" "https://github.com/libsdl-org/SDL" sdl-home] :out :inherit :err :inherit})
+    (fs/create-dirs sdl-build)
+    (b/process {:dir sdl-build :command-args ["cmake" "-DCMAKE_BUILD_TYPE=Release" ".."] :out :inherit :err :inherit})
+    (b/process {:dir sdl-build :command-args ["cmake" "--build" "." "--config" "Release" "--parallel"] :out :inherit :err :inherit})
+    (log "done")))
+
+(defn check [& _]
+  (prn @deps-basis))
+
+;; jank pseudo-deps-edn, powered by https://github.com/babashka/tools.bbuild
+
 (defn ->jank-deps-edn []
-  (let [basis @deps-basis]
-    {:module-path  (str/join File/pathSeparator (keys (:classpath basis)))
-     :include-dirs (-> basis :jank :include-dirs)}))
+  (let [{:keys [jank classpath]} @deps-basis]
+    (assoc jank :module-path (str/join File/pathSeparator (keys classpath)))))
+
+(defn ->flags [flag coll]
+  (into [] (mapcat (fn [entry] [flag entry])) coll))
 
 (defn jank-command [jank-deps-edn command {:keys [main-module extra]}]
-  (let [{:keys [module-path include-dirs]} jank-deps-edn
-        includes (into []
-                       (mapcat (fn [inc-dir] ["-I" inc-dir "-L" inc-dir]))
-                       include-dirs)]
+  (let [{:keys [module-path include-dirs library-dirs linked-libraries]} jank-deps-edn]
     (into []
           (remove nil?)
           (concat
            ["jank" "--module-path" module-path]
-           includes
+           (->flags "-I" include-dirs)
+           (->flags "-L" library-dirs)
+           (->flags "-l" linked-libraries)
            [command main-module]
            extra))))
 
@@ -33,7 +62,7 @@
     (b/process {:command-args ["clj-kondo" "--lint" classpath
                                "--dependencies" "--copy-configs" "--skip-lint"]})
     (catch Throwable err
-      (println "error when running clj-kondo! cause:" (:cause (Throwable->map err))))))
+      (log "error when running clj-kondo! cause:" (:cause (Throwable->map err))))))
 
 (defn prep [{}]
   (let [{:keys [module-path]} (->jank-deps-edn)]
@@ -42,10 +71,10 @@
 (defn jank
   {:org.babashka/cli {:exec-args {:args nil}}}
   [{:keys [args]}]
-  (println "setting up jank pseudo deps.edn project" args)
+  (log "setting up jank pseudo deps.edn project" args)
   (let [jedn (->jank-deps-edn)
         jcmd (jank-command jedn "run-main" {:main-module "chera.hello"
-                                            :extra ["-l" "compress" "--" args]})]
+                                            :extra ["--" args]})]
     (log jcmd)
     (b/process {:command-args jcmd})))
 
@@ -63,12 +92,3 @@
                                            :extra ["-o" "hello.exe"]})]
     (log jcmd)
     (b/process {:command-args jcmd})))
-
-(defn cpp
-  [{}]
-  (b/process {:command-args ["clang++" "-shared"
-                             "-o" "native/libcompress.dll"
-                             "-lz" "native/compress.cpp"]}))
-
-(defn check [& _]
-  (prn @deps-basis))

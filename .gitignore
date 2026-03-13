@@ -12,3 +12,5 @@ target
 *.out
 *.dll
 *.so
+
+.gitdeps
