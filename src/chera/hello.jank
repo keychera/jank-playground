@@ -1,4 +1,6 @@
 (ns chera.hello
+  (:include "compress.hpp")
+  (:refer-global :only [native_lib.compress])
   (:require
    [medley.core :as medley]
    [odoyle.rules :as o]
@@ -23,7 +25,14 @@
            (o/insert ::player ::health damaged-health)
            (o/reset!)))]}))
 
-(defn -main [& _]
+(defn do-native-stuff [args]
+  (if (empty? args)
+    (println "Try passing some data to compress!")
+    (let [input (first args)
+          output (native_lib.compress input)]
+      (println "input size" (count input) "output size" (count output)))))
+
+(defn -main [& args]
   (try
     (println "hello jank!")
     (let [cpp-val #cpp "hello"
@@ -42,6 +51,7 @@
                               (o/fire-rules)))]
             (println (o/query-all session' ::player))
             (recur (inc i) session')))))
+    (do-native-stuff args)
     (catch cpp/jank.runtime.object_ref e
       (println :caught e))))
 

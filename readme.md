@@ -127,3 +127,15 @@ we managed, barely
 https://github.com/keychera/odoyle-rules/tree/odoyle-jank
 
 with some jank error we found along the way (listed in hello.jank comment section)
+
+
+# pseudo cpp deps.edn
+
+check bb.edn's `:tasks`
+
+```sh
+bb prep
+bb run-main
+bb jepl
+# etc
+```
