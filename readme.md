@@ -119,3 +119,11 @@ tried some clojure libs, but each lib has its own blocker (as of now)
 
 - medley -> java stuff, but we patched it a bit = https://github.com/keychera/medley/commit/60f5783646b043fded53b607efcb72ab9df1a7dc
 
+
+# hello odoyle
+
+we managed, barely
+
+https://github.com/keychera/odoyle-rules/tree/odoyle-jank
+
+with some jank error we found along the way (listed in hello.jank comment section)

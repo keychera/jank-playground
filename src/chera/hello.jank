@@ -1,11 +1,84 @@
 (ns chera.hello
   (:require
-   [medley.core :as medley]))
+   [medley.core :as medley]
+   [odoyle.rules :as o]
+   [clojure.string :as str]))
+
+(def rules
+  (o/ruleset
+   {::player
+    [:what
+     [::player ::health health]
+     [::player ::defense defense]]
+
+    ::attack-player
+    [:what
+     [::player ::health health {:then false}]
+     [::player ::defense defense]
+     [attack-id ::damage damage]
+     :then
+     (let [damaged-health (- health (- damage defense))]
+       (-> session
+           (o/retract attack-id ::damage)
+           (o/insert ::player ::health damaged-health)
+           (o/reset!)))]}))
 
 (defn -main [& _]
-  (let [cpp-val #cpp "hello"
-        assoced (medley/assoc-some {:a 10} :b 3 :c nil :d 5)]
+  (try
     (println "hello jank!")
-    (println cpp-val)
-    (println (str "combine? " cpp-val))
-    (println assoced)))
+    (let [_ (println "rules2")
+          _ (println "rules" rules)
+          cpp-val #cpp "hello"
+          assoced (medley/assoc-some {:a 10} :b 3 :c nil :d 5)]
+      (println cpp-val)
+      (println (str "combine? " cpp-val))
+      (println assoced)
+      (loop [i 0
+             session (-> (reduce o/add-rule (o/->session) rules)
+                         (o/insert ::player ::health 100)
+                         (o/insert ::player ::defense 10))]
+        (when (< i 1000)
+          (let [session' (time
+                          (-> session
+                              (o/insert ::from-out-there ::damage 11)
+                              (o/fire-rules)))]
+            (println (o/query-all session' ::player))
+            (recur (inc i) session')))))
+    (catch cpp/jank.runtime.object_ref e
+      (println :caught e))))
+
+(comment
+
+  ;; things we found that err in jank, but works in clojure
+  (vec (set '(11 11)))
+  ;; Uncaught exception: invalid sequence: #{11}
+
+  (vec (persistent! (transient [1 2 3])))
+  ;; Uncaught exception: invalid sequence: [1 2 3]
+
+  (vec [1 2 3])
+  ;; Uncaught exception: invalid sequence: [1 2 3]
+
+  (vec '(1 2 3))
+  ;; [1 2 3]
+
+  (apply vector [1 2 3])
+  ;; [1 2 3]
+  ;; maybe `vec` itself is faulty or not yet complete
+
+  (nth (transient [1 2 3]) 1)
+  ;; Uncaught exception: not indexable: transient_vector
+  ;; in clojure this can be done
+
+  (sort > [1 22 2 3])
+  ;; Uncaught exception: invalid call to #object [unknown jit_function 0x1b530617b00] with 2 args provided
+  ;; sort is not yet impl?
+
+  (str/replace "hello.chera" #"." "-")
+  ;; Uncaught exception: TODO: port clojure.string/replace
+  ;; ok if its todo then it is fine
+
+  ;; ruleset macro call in let fails
+
+
+  ::waiting-for-something-to-happen?)
