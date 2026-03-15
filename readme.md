@@ -141,3 +141,25 @@ bb jepl
 
 bb jank --args "bbbbbbbbbbbbbbest if we try clojure"
 ```
+
+
+# try fresh install of msys
+
+```sh
+curl -fsSL https://github.com/ikappaki/jank-win-release/raw/refs/heads/main/jank-win-updater | bash
+# ==> Installing jank-win-updater 0.1.0 to ~/.local/bin...
+# 
+# Done. Ensure ~/.local/bin is in PATH or run as ~/.local/bin/jank-win-updater.
+```
+
+add ~/.local/bin to PATH in .bash_profile
+
+```sh
+bash -x jank-win-updater --all
+# + msg '==> jank-win installation done!'
+# + echo -e '\n==> jank-win installation done!\n'
+
+# ==> jank-win installation done!
+```
+
+huh, no clang error? why did I get error previously? mystery
